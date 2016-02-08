@@ -1,0 +1,8 @@
+name = Restful Toboggan
+description = Restful Toboggan enable authentication by email or username.
+dependencies[] = restful
+core = 7.x
+
+registry_autoload[] = PSR-4
+
+

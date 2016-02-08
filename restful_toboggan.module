@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file scoredaq_restful.module
+ * TODO: Enter file description here.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function restful_toboggan_menu() {
+  $items = array();
+
+  $items['admin/config/TODO-SECTION/scoredaq_restful'] = array(
+    'title' => 'Administer Scoredaq Restful',
+    'description' => 'Configure settings for Scoredaq Restful.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('scoredaq_restful_settings_form'),
+    'access arguments' => array('administer scoredaq_restful'),
+    'file' => 'scoredaq_restful.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function restful_toboggan_permission() {
+  $permissions = array();
+
+  $permissions['administer scoredaq_restful'] = array(
+    'title' => t('TODO: enter permission title'),
+    'description' => t('TODO: enter permission description'),
+  );
+  return $permissions;
+}
