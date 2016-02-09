@@ -1,4 +1,4 @@
-Restfull toboggan
+Restfull Toboggan
 ====================
 Restful Toboggan enable authentication by email or username on Drupal 7, require RESTful-Drupal module ( Restful Best Practice )
 
