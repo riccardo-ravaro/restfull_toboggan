@@ -59,24 +59,23 @@ class BasicAuthenticationToboggan extends Authentication
     if (!flood_is_allowed('failed_login_attempt_ip', variable_get('user_failed_login_ip_limit', 50), variable_get('user_failed_login_ip_window', 3600))) {
       throw new FloodException(format_string('Rejected by ip flood control.'));
     }
-    //var_dump($username);
+
     if (filter_var($username, FILTER_VALIDATE_EMAIL)) {
-      //var_dump(db_query_range("SELECT uid FROM {users} WHERE LOWER(mail) = LOWER(:mail) AND status = 1", 0, 1, array(':mail' => $username))->fetchField());
+
       if (!$uid = db_query_range("SELECT uid FROM {users} WHERE LOWER(mail) = LOWER(:mail) AND status = 1", 0, 1, array(':mail' => $username))->fetchField()) {
         // Always register an IP-based failed login event.
-        var_dump('failed_login_attempt_ip 2');
+
         flood_register_event('failed_login_attempt_ip', variable_get('user_failed_login_ip_window', 3600), ip_address());
         return null;
       } else {
         $username = db_query_range("SELECT name FROM {users} WHERE LOWER(mail) = LOWER(:mail) AND status = 1", 0, 1, array(':mail' => $username))->fetchField();
-        var_dump($username);
-        var_dump($password);
+
       }
     } else {
-      //var_dump('else');
+
       if (!$uid = db_query_range("SELECT uid FROM {users} WHERE name = :name AND status = 1", 0, 1, array(':name' => $username))->fetchField()) {
         // Always register an IP-based failed login event.
-        var_dump('failed_login_attempt_ip 1');
+
         flood_register_event('failed_login_attempt_ip', variable_get('user_failed_login_ip_window', 3600), ip_address());
         return null;
       }
@@ -95,21 +94,20 @@ class BasicAuthenticationToboggan extends Authentication
 
     // Don't allow login if the limit for this user has been reached.
     // Default is to allow 5 failed attempts every 6 hours.
-    //var_dump('pre test');
+
     if (flood_is_allowed('failed_login_attempt_user', variable_get('user_failed_login_user_limit', 5), variable_get('user_failed_login_user_window', 21600), $identifier)) {
       // We are not limited by flood control, so try to authenticate.
-      //var_dump('start_login');
+
       if ($uid = user_authenticate($username, $password)) {
         // Clear the user based flood control.
-        var_dump($identifier);
-        var_dump('id');
+
         flood_clear_event('failed_login_attempt_user', $identifier);
-        var_dump('return');
+
         $user = user_load($uid);
-        // var_dump($user);
+
         return user_load($uid);
       }
-      //var_dump('login failed');
+
       flood_register_event('failed_login_attempt_user', variable_get('user_failed_login_user_window', 3600), $identifier);
     } else {
       flood_register_event('failed_login_attempt_user', variable_get('user_failed_login_user_window', 3600), $identifier);

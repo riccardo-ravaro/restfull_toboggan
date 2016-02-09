@@ -72,13 +72,13 @@ class LoginCookieToboggan__1_0 extends ResourceEntity implements ResourceInterfa
   {
     // Login the user.
     $account = $this->getAccount();
-    var_dump($account);
+
     $this->loginUser($account);
 
     $user_resource = restful()
       ->getResourceManager()
       ->getPlugin('users:1.0');
-    var_dump($user_resource);
+
     // User resource may be disabled.
     $output = $user_resource ? $user_resource->view($account->uid) : array();
     if ($resource_field_collection = reset($output)) {
